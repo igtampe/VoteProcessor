@@ -1,6 +1,4 @@
 package Testing;
-
-import java.io.IOException;
 import java.util.Random;
 
 import IO.TextFileManager;
