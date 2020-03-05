@@ -1,0 +1,5 @@
+Number of ballots: 5
+Number of blank ballots: 0
+Number of invalid ballots: 0
+Round 1: Troom was eliminated with 1 #1's
+Winner: Jeb! wins with 3 #1's
