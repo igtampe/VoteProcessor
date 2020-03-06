@@ -27,7 +27,6 @@ In each ballot voters can vote for any number of candidates from 0 (blank ballot
 n is the number of candidates running for that particular position. The voter can rank each
 candidate according to his/her preference, assigning the value 1 to the highest preference, 2 to
 the second-highest preference, and so on, with a higher value indicating a less-preferred
-Prof. Juan O. López Gerena C4020/I4035 Project 1 Specs Page 1 of 7
 candidate. No ranking value can be repeated in a ballot; otherwise, the ballot is invalid. Also, if
 the voter chooses to vote for k < n candidates, the ranking values used must be the values 1 to
 k. In that case, if a ranking value greater than k is given, the ballot is also considered invalid. <br> <br>
