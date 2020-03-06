@@ -80,9 +80,7 @@ public class TextFileManager {
 		//Boop we're done
 		return Temp;
 
-
 	}
-
 
 	/**
 	 * Prints this out into a file (Will overwrite!
@@ -102,28 +100,4 @@ public class TextFileManager {
 		Pen.close();
 
 	}
-
-
-	/**
-	 * Spits this out into a file (will overwrite!)
-	 * @param Line The line u want to add.
-	 * @throws Exception If something happened, it throws an exception.
-	 */
-	@Deprecated
-	public void Spit(String Line) throws Exception {
-
-		//Time to write
-		BufferedWriter Pen = new BufferedWriter(new FileWriter(filename));
-
-		//Write
-		Pen.append(Line + "\n");
-
-		//we're done writing a line. Put the cap on the pen and close it.
-		Pen.close();
-
-	}
-
-
-
-
 }

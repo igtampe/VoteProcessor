@@ -28,7 +28,7 @@ public class ballot {
 		//assume the count of the array (minus the first one because that identifies this ballot) 
 		NumberofCandidates=SplitString.length-1;
 		
-		if (CheckIfBlank(SplitString)) {
+		if (SplitString.length==1) {
 			Blank=true;
 			return;
 		}
@@ -80,89 +80,51 @@ public class ballot {
 			Candidate=getCandidateByRank(TestRank);
 			TestRank++;
 		}
-		
-	}
-	
-	@Override
-	public String toString() {
-		return OriginalBallotString;
 	}
 	
 	/**
-	 * Checks if a ballot is empty
-	 * @param BallotString The complete ballot string, split into an array by ","
-	 * @return If all of the array elements end with ":" (osea they are empty), returns TRUE
+	 * Returns the original ballot string used to generate this ballot.
 	 */
-	public boolean CheckIfBlank(String[] BallotString) {
-		//ok nevermind this isn't the way blank votes are strung. If BallotString has length of 1 it's blank
-		return BallotString.length==1;
-		
-//		for (String string : BallotString) {
-//			//if just one doesn't end with ":" return false
-//			if(!string.endsWith(":")) {return false;}
-//		}
-//		
-		//All votes ended with ":", therefore it's blank
-		//return true;
-		
-	}
+	public String toString() {return OriginalBallotString;}
 	
 	/**
-	 * Gets the number of candidates this ballot has votes for
-	 * @return
-	 */
-	public int getNumberofCandidates() {return NumberofCandidates;} //this will be used by the ellection class for consistency.
-	
-	/**
-	 * Returns wether this ballot was found to be invalid
-	 * @return
+	 * @return Whether this ballot was found to be invalid
 	 */
 	public boolean isInvalid() {return Invalid;}
 	
 	/**
-	 * Returns wether this ballot was found to be blank
-	 * @return
+	 * @return Whether this ballot was found to be blank
 	 */
 	public boolean isBlank() {return Blank;}
 	
 	/**
-	 * Marks this ballot as invalid (This will be used by the election class.
+	 * Marks this ballot as invalid
 	 */
 	public void markInvalid() {Invalid=true;}
 	
 	/**
-	 * Returns ballot number
-	 * @return The number of this ballot
+	 * @return The Ballot ID
 	 */
-	 public int getBallotNum() {
-		 return ballotID;
-	 }
+	 public int getBallotNum() {return ballotID;}
 
 	 /**
-	  * Returns this ballot's current leading choice.
-	  * @return The CandidateID for the current leading choice.
+	  * @return The CandidateID for the current leading choice of this ballot.
 	  */
 	 public int getFirstChoice() {return getCandidateByRank(1);} 
 
 	 /**
-	  * @param I The candidate u want to find
-	  * @return This ballot's rank of that candidate
+	  * @return This ballot's rank of the specified candidate.
 	  */
-	 public int getRankByCandidate(int I) {
-		 for (Vote vote : CandidateChoices) {
-			if (vote.getCandidate()==I) {return vote.getPLevel();}
-		}
+	 public int getRankByCandidate(int CandidateID) {
+		 for (Vote vote : CandidateChoices) {if (vote.getCandidate()==CandidateID) {return vote.getPLevel();}}
 		 return -1;
 	 } 
 
 	 /**
-	  * @param I The rank u want to find
-	  * @return This ballot's candidate that has that rank.
+	  * @return This ballot's candidate that has the specified rank.
 	  */
-	 public int getCandidateByRank(int I) {
-		 for (Vote vote : CandidateChoices) {
-			if (vote.getPLevel()==I) {return vote.getCandidate();}
-		}
+	 public int getCandidateByRank(int Rank) {
+		 for (Vote vote : CandidateChoices) {if (vote.getPLevel()==Rank) {return vote.getCandidate();}}
 		 return -1;
 	 } 
 	 
@@ -170,19 +132,17 @@ public class ballot {
 	 /**
 	  * Eliminates a candidate from this ballot
 	  * @param candidateId The ID of the candidate you wish to remove.
-	  * @return
 	  */
-	 public boolean eliminate(int candidateId) {
+	 public void eliminate(int candidateId) {
 		 int PLevelLimit = getRankByCandidate(candidateId);
 		 if (candidateId<1) {throw new IllegalArgumentException("Candidate to be removed isn't valid");}
 		 //Comb through the array of choices, reduce their preference level by 1, and if their candidate ID matches, remove them.
 		 for (Vote vote : CandidateChoices) {
-			if(vote.getCandidate()==candidateId) {vote.setPLevel(0);} //this may not be possible, but I mean its ok. We can just set their PLevel to 0 instead.
+			if(vote.getCandidate()==candidateId) {vote.setPLevel(0);} //A Plevel of 0 is ignored for all intents and purposes.
 			if(vote.getPLevel()>PLevelLimit) {vote.setPLevel(vote.getPLevel()-1);}
 			if(vote.getPLevel()<0) {throw new IllegalStateException("Algo paso, and somehow a candidate has less than 0");}
 		}
-		 return false;
-	 }; 
+	 }
 	 
 	 /**
 	  * Represents one of the votes in the ballot, tying a candidate and the voter's preference level for that candidate
@@ -195,7 +155,7 @@ public class ballot {
 		 /**
 		  * Creates a vote, tying a candidate with this voter's preference level.
 		  * @param ID The ID of the candidate this vote goes to
-		  * @param PLevel The Voter's preference level for this candidate.
+		  * @param PLevel The Voter's rank for this candidate.
 		  */
 		 public Vote(int ID, int PLevel) {
 			 this.CandidateID=ID;
@@ -203,28 +163,23 @@ public class ballot {
 		 }
 		 
 		 /**
-		  * Gets this vote's tied candidate
-		  * @return a CandidateID
+		  * @return This vote's tied candidate
 		  */
 		 public int getCandidate() {return CandidateID;}
 		 
 		 /**
-		  * Gets this voter's preference level for the candidate this vote is tied to.
-		  * @return
+		  * @return This voter's preference level for the candidate in this vote.
 		  */
 		 public int getPLevel() {return PreferenceLevel;}
 		 
-		 public boolean setPLevel(int NewPLevel) {
-			 PreferenceLevel=NewPLevel;
-			 return true;
-		 }
+		 /**
+		  * Set the preference level of the candidate in this vote.
+		  */
+		 public void setPLevel(int NewPLevel) {PreferenceLevel=NewPLevel;}
 		
-		 @Override
-		public String toString() {
-			return CandidateID + ":" + PreferenceLevel;
-		}
+		 /**
+		  * Returns the vote string used to make this Vote.
+		  */
+		public String toString() {return CandidateID + ":" + PreferenceLevel;}
 	 }
-	
-	
-
 }

@@ -1,5 +1,18 @@
-Number of ballots: 5
-Number of blank ballots: 0
-Number of invalid ballots: 0
-Round 1: Troom was eliminated with 1 #1's
-Winner: Jeb! wins with 3 #1's
+Number of ballots: 2002
+Number of blank ballots: 1
+Number of invalid ballots: 1
+Round 1: The Yang Gang was eliminated with 105 #1's
+Round 2: Tulso was eliminated with 114 #1's
+Round 3: H was eliminated with 123 #1's
+Round 4: Troom was eliminated with 134 #1's
+Round 5: Klobushake was eliminated with 152 #1's
+Round 6: Obabo was eliminated with 166 #1's
+Round 7: Hairris was eliminated with 183 #1's
+Round 8: Clinton was eliminated with 210 #1's
+Round 9: Mini Mike was eliminated with 236 #1's
+Round 10: Beta was eliminated with 266 #1's
+Round 11: Amama was eliminated with 298 #1's
+Round 12: Bern was eliminated with 381 #1's
+Round 13: JEB! was eliminated with 473 #1's
+Round 14: The Booty Judge was eliminated with 650 #1's
+Winner: Pocahontas wins with 1015 #1's

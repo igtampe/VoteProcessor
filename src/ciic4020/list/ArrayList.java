@@ -5,31 +5,25 @@ import java.util.NoSuchElementException;
 
 public class ArrayList<E> implements List<E> {
 
+	//Hey I was here and cleaned up a few things we didn't use. Hope u don't mind
+	//-IGT
+	
 	// private fields
 	private E elements[];
-	
 	private int currentSize;
-	
 	
 	private class ListIterator implements Iterator<E> {
 		private int currentPosition;
 		
-		public ListIterator() {
-			this.currentPosition = 0;
-		}
+		public ListIterator() {this.currentPosition = 0;}
 
 		@Override
-		public boolean hasNext() {
-			return this.currentPosition < size();
-		}
+		public boolean hasNext() {return this.currentPosition < size();}
 
 		@Override
 		public E next() {
-			if (this.hasNext()) {
-				return (E) elements[this.currentPosition++];
-			}
-			else
-				throw new NoSuchElementException();
+			if (this.hasNext()) {return (E) elements[this.currentPosition++];}
+			else {throw new NoSuchElementException();}
 		}
 	}
 
@@ -44,11 +38,9 @@ public class ArrayList<E> implements List<E> {
 
 	@Override
 	public void add(E obj) {
-		if (obj == null)
-			throw new IllegalArgumentException("Object cannot be null.");
+		if (obj == null) {throw new IllegalArgumentException("Object cannot be null.");}
 		else {
-			if (this.size() == this.elements.length)
-				reAllocate();
+			if (this.size() == this.elements.length) {reAllocate();}
 			this.elements[this.currentSize++] = obj;
 		}		
 	}
@@ -60,48 +52,22 @@ public class ArrayList<E> implements List<E> {
 		for (int i = 0; i < this.size(); i++)
 			newElements[i] = this.elements[i];
 		// replace old elements with newElements
-		int oldcurrentsize=this.currentSize;
+		int oldcurrentsize=this.currentSize; 		//haha it is my fix que lindo
 		this.clear();
 		this.currentSize=oldcurrentsize;
 		this.elements = newElements;
 	}
 
 	@Override
-	public void add(int index, E obj) {
-		if (obj == null)
-			throw new IllegalArgumentException("Object cannot be null.");
-		if (index == this.currentSize)
-			this.add(obj); // Use other method to "append"
-		else {
-			if (index >= 0 && index < this.currentSize) {
-				if (this.currentSize == this.elements.length)
-					reAllocate();
-				// move everybody one spot to the back
-				for (int i = this.currentSize; i > index; i--)
-					this.elements[i] = this.elements[i - 1];
-				// add element at position index
-				this.elements[index] = obj;
-				this.currentSize++;
-			}
-			else
-				throw new ArrayIndexOutOfBoundsException();
-		}
-	}
-
-	@Override
 	public boolean remove(E obj) {
-		if (obj == null)
-			throw new IllegalArgumentException("Object cannot be null.");
+		if (obj == null) {throw new IllegalArgumentException("Object cannot be null.");}
 		// first find obj in the array
 		int position = this.firstIndex(obj);
-		if (position >= 0) // found it
-			return this.remove(position);
-		else
-			return false;
+		if (position >= 0) {return this.remove(position);} // found it
+		else {return false;}
 	}
 
-	@Override
-	public boolean remove(int index) {
+	private boolean remove(int index) {
 		if (index >= 0 && index < this.currentSize) {
 			// move everybody one spot to the front
 			for (int i = index; i < this.currentSize - 1; i++)
@@ -109,56 +75,15 @@ public class ArrayList<E> implements List<E> {
 			this.elements[--this.currentSize] = null;
 			return true;
 		}
-		else
-			return false;
-	}
-
-	@Override
-	public int removeAll(E obj) {
-		int counter = 0;
-		while (this.remove(obj))
-			counter++;
-		return counter;
-	}
-
-	@Override
-	public E get(int index) {
-		if (index >= 0 && index < this.size())
-			return this.elements[index];
-		else
-			throw new ArrayIndexOutOfBoundsException();
-	}
-
-	@Override
-	public E set(int index, E obj) {
-		if (obj == null)
-			throw new IllegalArgumentException("Object cannot be null.");
-		if (index >= 0 && index < this.size()) {
-			E temp = this.elements[index];
-			this.elements[index] = obj;
-			return temp;
-		}
-		else
-			throw new ArrayIndexOutOfBoundsException();
+		else {return false;}
 	}
 
 	@Override
 	public E first() {
-		if (this.isEmpty())
-			return null;
-		else
-			return this.elements[0];
+		if (this.isEmpty()) {return null;}
+		return this.elements[0];
 	}
 
-	@Override
-	public E last() {
-		if (this.isEmpty())
-			return null;
-		else
-			return this.elements[this.currentSize - 1];
-	}
-
-	@Override
 	public int firstIndex(E obj) {
 		for (int i = 0; i < this.size(); i++)
 			if (this.elements[i].equals(obj))
@@ -167,71 +92,19 @@ public class ArrayList<E> implements List<E> {
 	}
 
 	@Override
-	public int lastIndex(E obj) {
-		for (int i = this.size() - 1; i >= 0; i--)
-			if (this.elements[i].equals(obj))
-				return i;
-		return -1;
-	}
+	public int size() {return this.currentSize;}
+
+	private boolean isEmpty() {return this.size() == 0;}
 
 	@Override
-	public int size() {
-		return this.currentSize;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return this.size() == 0;
-	}
-
-	@Override
-	public boolean contains(E obj) {
-		return this.firstIndex(obj) >= 0;
-	}
+	public boolean contains(E obj) {return this.firstIndex(obj) >= 0;}
 
 	@Override
 	public void clear() {
-		for (int i = 0; i < this.currentSize; i++)
-			this.elements[i] = null;
+		for (int i = 0; i < this.currentSize; i++) {this.elements[i] = null;}
 		this.currentSize = 0;
 	}
 
 	@Override
-	public Iterator<E> iterator() {
-		return new ListIterator();
-	}
-
-	@Override
-	public int replaceAll(E e, E f) {
-		int TimesWeReplacedAlgo=0;
-		
-		//Go through all the array with a for each, and if the value matches, `replace`
-		for (int i = 0; i < elements.length; i++) {
-			if (elements[i]==null) {return TimesWeReplacedAlgo;} //In case the list isn't full (IE A position is null, Just go ahead and *get the heck out*
-			if (elements[i].equals(e)) {
-				elements[i]=f;
-				TimesWeReplacedAlgo++;
-			}
-		}
-		
-		//Return the number of times u did a replace
-		return TimesWeReplacedAlgo;
-	}
-
-	@Override
-	public List<E> reverse() {
-		
-		if(this.isEmpty()) {return new ArrayList<E>(1);} //special case where if the array is empty, return an empty arraylist
-		
-		//Generate a new arraylist of the size of the current coso, and add the coso in reverse
-		ArrayList<E> NewList=new ArrayList<E>(currentSize);
-		//HAHAAHA IT'S LIKE A MIRROR CLONE
-		
-		//Start at the last one, and work our way back
-		for (int i = currentSize-1; i > -1; i--) {
-			//add each element backwards to front.
-			NewList.add(this.get(i));
-		}
-		return NewList;
-	}
+	public Iterator<E> iterator() {return new ListIterator();}
 }
