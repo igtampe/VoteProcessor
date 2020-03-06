@@ -1,8 +1,12 @@
 package ciic4020.list;
 
+/**
+ * 	This is a slightly stripped down version of the list interface. We only use what we need. Let's save some space!
+ * @author igtampe
+ *
+ * @param <E>
+ */
 public interface List<E> extends Iterable<E> {
-
-	//This is a slightly stripped down version of the list.
 	
 	public void add(E obj);
 	public boolean remove(E obj);

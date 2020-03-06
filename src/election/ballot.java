@@ -2,6 +2,11 @@ package election;
 
 import ciic4020.list.ArrayList;
 
+/**
+ * The ballot class. It contains the private internal class Vote, which holds each candidate and their Rank according to this voter.
+ * @author igtampe
+ *
+ */
 public class ballot {
 	
 	private int ballotID;

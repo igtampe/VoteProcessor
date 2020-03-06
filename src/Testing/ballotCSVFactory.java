@@ -3,7 +3,13 @@ import java.util.Random;
 
 import IO.TextFileManager;
 import ciic4020.list.ArrayList;
+import ciic4020.list.DoublyLinkedList;
 
+/**
+ * This coso creates ballots. Maybe use it to create insane tests with hunderds of thousands of candidates and ballots!
+ * @author igtampe
+ *
+ */
 public class ballotCSVFactory {
 
 	public final static int VALID=2000;
@@ -17,7 +23,7 @@ public class ballotCSVFactory {
 		TextFileManager NewBallots = new TextFileManager(OutputFile,true);
 
 		//Replace this with a method that you made to get a file as an array
-		ArrayList<String> AllCandidates = (new TextFileManager(InputFile)).ToArray();
+		DoublyLinkedList<String> AllCandidates = (new TextFileManager(InputFile)).ToArray();
 
 		//Get all candidates IDs
 		ArrayList<Integer> AllCandidateIDs = new ArrayList<Integer>(AllCandidates.size());

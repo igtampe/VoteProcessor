@@ -1,7 +1,24 @@
 package election;
 import IO.TextFileManager;
 import ciic4020.list.ArrayList;
+import ciic4020.list.DoublyLinkedList;
 
+/**
+ * ---[USED DATA STRUCTURES]---
+ * Arraylists were used for everything that was defined. Given their low access times and relative simplicity, I considered them the best fit.
+ * I mean I could've used any data structure, really. Even a set. As long as it's itterable, we can do. There's need for a sense
+ * of order. As long as it's dynamic, we can use it.
+ * 
+ * DoublyLinkedLists could work, but the arraylists we create have a defined, known size already, so ReAllocate doesn't need to be run.
+ * The only time we don't is for Print, but it's ok. 
+ * 
+ * The only times we don't know what the size of the structure will be is when we read files, hence the TextFileManager uses a DoublyLinked List.
+ * 
+ * The Election class also incldues the private internal class Candidate, which holds a candidate's ID, Name, and the ballots where he is numero uno.
+ * 
+ * @author igtampe
+ *
+ */
 public class election {
 
 	private static ArrayList<Candidate> ActiveCandidates;
@@ -34,10 +51,8 @@ public class election {
 
 
 		//Read all of the files we're going to read.
-		ArrayList<String> CandidatesAsStrings;
-		ArrayList<String> BallotsAsStrings;
-		CandidatesAsStrings= CandidatesCSV.ToArray();
-		BallotsAsStrings= BallotsCSV.ToArray();
+		DoublyLinkedList<String> CandidatesAsStrings= CandidatesCSV.ToArray();
+		DoublyLinkedList<String> BallotsAsStrings= BallotsCSV.ToArray();
 
 		//Active candidates includes all candidates so this will be that.
 		ActiveCandidates = new ArrayList<election.Candidate>(CandidatesAsStrings.size());

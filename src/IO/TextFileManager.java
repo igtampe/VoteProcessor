@@ -8,9 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import ciic4020.list.ArrayList;
+import ciic4020.list.DoublyLinkedList;
 
 /**
- * A class to read and write to text files.
+ * A class to read and write to text files. I made this separately to not have to repeat this ever, and to re-use it in future projects. It'll probably grow when I need to do more things.
  * @author igtampe
  * 
  */
@@ -57,13 +58,13 @@ public class TextFileManager {
 	 * @return The file as an array.
 	 * @throws Exception If something happens (Possibly that it doesn't exist)
 	 */
-	public ArrayList<String> ToArray() throws Exception {
+	public DoublyLinkedList<String> ToArray() throws Exception {
 
 		//Time to read using this program's "eyes" 
 		BufferedReader Eyes = new BufferedReader(new FileReader(filename));
 
 		//Create the arraylist we're going to return
-		ArrayList<String> Temp = new ArrayList<String>(1);
+		DoublyLinkedList<String> Temp = new DoublyLinkedList<String>();
 
 		//Read the first line
 		String currentLine = Eyes.readLine();
@@ -83,7 +84,7 @@ public class TextFileManager {
 	}
 
 	/**
-	 * Prints this out into a file (Will overwrite!
+	 * Prints this out into a file (Will overwrite!)
 	 * @param StuffToPrint
 	 */
 	public void print(ArrayList<String> StuffToPrint) throws Exception {
@@ -100,4 +101,5 @@ public class TextFileManager {
 		Pen.close();
 
 	}
+	
 }
