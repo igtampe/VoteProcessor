@@ -12,9 +12,9 @@ import ciic4020.list.DoublyLinkedList;
  */
 public class ballotCSVFactory {
 
-	public final static int VALID=2000;
-	public final static int BLANK=1;
-	public final static int INVALID=1;
+	public final static int VALID=10;
+	public final static int BLANK=10;
+	public final static int INVALID=10;
 	public final static Random Rand = new Random();
 	public final static String InputFile="candidates.csv";
 	public final static String OutputFile="ballots.csv";

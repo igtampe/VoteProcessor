@@ -21,6 +21,11 @@ import ciic4020.list.DoublyLinkedList;
  */
 public class election {
 
+	//PLEASE FOR THE LOVE OF GOD DO NOT FORGET TO REPLACE THIS TO THE RIGHT COSOS WHEN WE SUBMIT
+	public final static String CandidatesFile = "candidates.csv";
+	public final static String BallotsFile = "ballots.csv";
+	//DO NOT FORGET IGNACIO. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
 	private static ArrayList<Candidate> ActiveCandidates;
 	public static ArrayList<ballot> AllValidBallots;
 
@@ -44,19 +49,16 @@ public class election {
 		ArrayList<String> Results = new ArrayList<String>(5);
 
 		//Create our text file managers. Two will be used to read, and the other one will be used to write.
-		CandidatesCSV = new TextFileManager("candidates.csv");
-		BallotsCSV = new TextFileManager("ballots.csv");
+		CandidatesCSV = new TextFileManager(CandidatesFile);
+		BallotsCSV = new TextFileManager(BallotsFile);
 		ResultsTXT = new TextFileManager("results.txt",true); //this one we have to overwrite.
-
-
 
 		//Read all of the files we're going to read.
 		DoublyLinkedList<String> CandidatesAsStrings= CandidatesCSV.ToArray();
 		DoublyLinkedList<String> BallotsAsStrings= BallotsCSV.ToArray();
 
-		//Active candidates includes all candidates so this will be that.
+		//LOAD CANDIDATES
 		ActiveCandidates = new ArrayList<election.Candidate>(CandidatesAsStrings.size());
-		AllValidBallots = new ArrayList<ballot>(BallotsAsStrings.size());
 
 		//FOR EACH LINE CREATE A NEW CANDIDATE AND ADD IT TO THE ARRAYLIST OF CANDIDATES
 		for (String string : CandidatesAsStrings) {
@@ -64,6 +66,21 @@ public class election {
 			ActiveCandidates.add(new Candidate(currentCandidate[0],Integer.parseInt(currentCandidate[1])));
 			System.out.println("Added candidate '" + currentCandidate[0] + "' with ID " + currentCandidate[1]);
 		}
+
+		if (BallotsAsStrings.size()==0) {
+			//Handle an exception if there is no file, or if the file is ```v a c i a```
+			Results.add("Number of ballots: " + (totalValidBallots+totalBlankBallots+totalInvalidBallots));
+			Results.add("Number of blank ballots: " + totalBlankBallots);
+			Results.add("Number of invalid ballots: " + totalInvalidBallots);
+
+			Results.add("Winner: " + ActiveCandidates.first() + " wins with 0 #1's");
+
+			ResultsTXT.print(Results);
+			return;
+		}
+		
+		//LOAD BALLTOS
+		AllValidBallots = new ArrayList<ballot>(BallotsAsStrings.size());
 
 		//FOR EACH LINE IN THE ARRAY, CREATE A NEW BALLOT AND INCREMENT THE APPROPRIATE totalBallot VARIABLE (Invalid, Blank, Valid)		
 		for (String string : BallotsAsStrings) {
@@ -86,6 +103,19 @@ public class election {
 		Results.add("Number of ballots: " + (totalValidBallots+totalBlankBallots+totalInvalidBallots));
 		Results.add("Number of blank ballots: " + totalBlankBallots);
 		Results.add("Number of invalid ballots: " + totalInvalidBallots);
+
+		if (totalValidBallots==0) {
+			//Handle a possibility that there are no valid ballots
+			//(this Election is screwed if everything is invalid wow)
+			Results.add("Winner: " + leadingCandidate() + " wins with 0 #1's");
+
+			//Should we add a little warning like
+			//Results.add("ALL BALLOTS WERE INVALID. ALGO PASO, AND YOU SHOULD PROBABLY CHECK IT OUT");
+			//or algo asi
+
+			ResultsTXT.print(Results);
+			return;
+		}
 
 		int Rounds=1;
 
