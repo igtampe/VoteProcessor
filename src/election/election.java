@@ -22,8 +22,8 @@ import ciic4020.list.DoublyLinkedList;
 public class election {
 
 	//PLEASE FOR THE LOVE OF GOD DO NOT FORGET TO REPLACE THIS TO THE RIGHT COSOS WHEN WE SUBMIT
-	public final static String CandidatesFile = "candidates.csv";
-	public final static String BallotsFile = "ballots.csv";
+	public final static String CandidatesFile = "candidatesORIG.csv";
+	public final static String BallotsFile = "ballotsORIG.csv";
 	//DO NOT FORGET IGNACIO. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 	private static ArrayList<Candidate> ActiveCandidates;
@@ -262,6 +262,9 @@ public class election {
 
 
 		} while(LLC.size()>1 && N<=ActiveCandidates.size());
+		
+		//Special case, if there's still people, return with the highest candidate ID
+		if(LLC.size()>1) {return LLC.last();}
 		return CurrentlyTrailingCandidate;
 
 	}

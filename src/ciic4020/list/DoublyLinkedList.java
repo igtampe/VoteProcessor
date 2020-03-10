@@ -25,14 +25,37 @@ public class DoublyLinkedList<E> implements List<E> {
 		
 		//This constructor goes unused and I wonder why. Still though it would be nice to keep it.
 		@SuppressWarnings("unused")
-		public Node(E value) {this(value, null, null);} // Delegate to other constructor
-		public Node() {this(null, null, null);} // Delegate to other constructor
+		public Node(E value) {
+			this(value, null, null); // Delegate to other constructor
+		}
 		
-		public E getValue() {return value;}
-		public Node getNext() {return next;}
-		public void setNext(Node next) {this.next = next;}
-		public Node getPrev() {return prev;}
-		public void setPrev(Node prev) {this.prev = prev;}
+		public Node() {
+			this(null, null, null); // Delegate to other constructor
+		}
+
+		public E getValue() {
+			return value;
+		}
+
+		public void setValue(E value) {
+			this.value = value;
+		}
+
+		public Node getNext() {
+			return next;
+		}
+
+		public void setNext(Node next) {
+			this.next = next;
+		}
+		
+		public Node getPrev() {
+			return prev;
+		}
+
+		public void setPrev(Node prev) {
+			this.prev = prev;
+		}
 		
 		public void clear() {
 			value = null;
@@ -45,10 +68,14 @@ public class DoublyLinkedList<E> implements List<E> {
 
 		private Node nextNode;
 		
-		public ListIterator() {nextNode = header.getNext();}
+		public ListIterator() {
+			nextNode = header.getNext();
+		}
 	
 		@Override
-		public boolean hasNext() {return nextNode != trailer;}
+		public boolean hasNext() {
+			return nextNode != trailer;
+		}
 
 		@Override
 		public E next() {
@@ -101,7 +128,33 @@ public class DoublyLinkedList<E> implements List<E> {
 		currentSize++;
 	}
 
-	
+	@Override
+	public void add(int index, E obj) {
+		Node curNode, newNode;
+		
+		/* First confirm index is a valid position
+		   We allow for index == size() and delegate to add(object). */
+		if (index < 0 || index > size())
+			throw new IndexOutOfBoundsException();
+		if (index == size())
+			add(obj); // Use our "append" method
+		else {
+			// Get predecessor node (at position index - 1)
+			curNode = get_node(index - 1);
+			/* The new node must be inserted between curNode and curNode's next
+			   Note that if index = 0, curNode will be header node */
+			newNode = new Node(obj, curNode.getNext(), curNode);
+
+			//Link the next node back to this one
+			newNode.getNext().setPrev(newNode);
+
+			//link the previous one to this one
+			newNode.getPrev().setNext(newNode);
+			
+			currentSize++;
+		}
+	}
+
 	@Override
 	public boolean remove(E obj) {
 		Node curNode = header;
@@ -136,7 +189,8 @@ public class DoublyLinkedList<E> implements List<E> {
 			return false;
 	}
 	
-	private boolean remove(int index) {
+	@Override
+	public boolean remove(int index) {
 		Node rmNode;
 	
 		// First confirm index is a valid position
@@ -174,6 +228,50 @@ public class DoublyLinkedList<E> implements List<E> {
 		return curNode;
 	}
 
+	@Override
+	public int removeAll(E obj) {
+		int counter = 0;
+		Node curNode = header;
+		Node nextNode = curNode.getNext();
+		
+		/* We used the following in ArrayList, and it would also work here,
+		 * but it would have running time of O(n^2).
+		 * 
+		 * while (remove(obj))
+		 * 		counter++;
+		 */
+		
+		// Traverse the entire list
+		while (nextNode != trailer) { 
+			if (nextNode.getValue().equals(obj)) {
+				// Remove nextNode
+				
+				//nextnode is the one we want to delete
+				
+				//Just use the code we used in remove(index) but instead of rmnode, use nextnode
+				
+				//link the one behind it to the next one
+				nextNode.getPrev().setNext(nextNode.getNext());
+				
+				//Link the next one to the one before
+				nextNode.getNext().setPrev(nextNode.getPrev());
+				
+				nextNode.clear();
+				currentSize--;
+				counter++;
+				/* Node that was pointed to by nextNode no longer exists
+				   so reset it such that it's still the node after curNode */
+				nextNode = curNode.getNext();
+			}
+			else {
+				curNode = nextNode;
+				nextNode = nextNode.getNext();
+			}
+		}
+		return counter;
+	}
+
+	@Override
 	public E get(int index) {
 		// get_node allows for index to be -1, but we don't want get to allow that
 		if (index < 0 || index >= size())
@@ -182,8 +280,27 @@ public class DoublyLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public E first() {return get(0);}
+	public E set(int index, E obj) {
+		// get_node allows for index to be -1, but we don't want set to allow that
+		if (index < 0 || index >= size())
+			throw new IndexOutOfBoundsException();
+		Node theNode = get_node(index);
+		E theValue = theNode.getValue();
+		theNode.setValue(obj);
+		return theValue;
+	}
 
+	@Override
+	public E first() {
+		return get(0);
+	}
+
+	@Override
+	public E last() {
+		return get(size()-1);
+	}
+
+	@Override
 	public int firstIndex(E obj) {
 		Node curNode = header.getNext();
 		int curPos = 0;
@@ -199,10 +316,31 @@ public class DoublyLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public int size() {return currentSize;}
+	public int lastIndex(E obj) {
+		Node curNode = trailer.getPrev();
+		int curPos = size() - 1;
+		// Traverse the list (backwards) until we find the element or we reach the beginning
+		while (curNode != header && !curNode.getValue().equals(obj)) {
+			curPos--;
+			curNode = curNode.getPrev();
+		}
+		return curPos; // Will be -1 if we reached the header
+	}
 
 	@Override
-	public boolean contains(E obj) {return firstIndex(obj) != -1;}
+	public int size() {
+		return currentSize;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return size() == 0;
+	}
+
+	@Override
+	public boolean contains(E obj) {
+		return firstIndex(obj) != -1;
+	}
 
 	@Override
 	public void clear() {
