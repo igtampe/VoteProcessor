@@ -80,11 +80,24 @@ public class ballot {
 		//CHECK THAT ALL RELEVANT PLEVELS ARE THERE.
 		int Candidate=0;
 		int TestRank=1;
-		while(TestRank<NumberofCandidates || Candidate==-1)	{
+		while(TestRank<NumberofCandidates+1 || Candidate==-1)	{
 			//Check that each rank has a candidate. If the candidate is equal to -1, we don't have it.
 			Candidate=getCandidateByRank(TestRank);
 			TestRank++;
+			if(Candidate==-1) {markInvalid(); return;}
 		}
+		
+		Candidate = 1;
+		TestRank=0;
+		while(Candidate<NumberofCandidates+1 || TestRank==-1)	{
+			//Check that each candidate has a Rank. If the candidate is equal to -1, we don't have it.
+			TestRank=getRankByCandidate(Candidate);
+			Candidate++;
+			if(TestRank==-1) {markInvalid(); return;}
+		}
+		
+
+		
 	}
 	
 	/**
@@ -113,10 +126,17 @@ public class ballot {
 	 public int getBallotNum() {return ballotID;}
 
 	 /**
+	  * @return Number of candidates in this ballot
+	  */
+	public int getNumberOfCandidates() {return NumberofCandidates;}
+
+	 
+	 /**
 	  * @return The CandidateID for the current leading choice of this ballot.
 	  */
 	 public int getFirstChoice() {return getCandidateByRank(1);} 
 
+	 
 	 /**
 	  * @return This ballot's rank of the specified candidate.
 	  */
@@ -187,4 +207,5 @@ public class ballot {
 		  */
 		public String toString() {return CandidateID + ":" + PreferenceLevel;}
 	 }
+
 }

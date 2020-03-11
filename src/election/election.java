@@ -78,7 +78,7 @@ public class election {
 			ResultsTXT.print(Results);
 			return;
 		}
-		
+
 		//LOAD BALLTOS
 		AllValidBallots = new ArrayList<ballot>(BallotsAsStrings.size());
 
@@ -86,23 +86,17 @@ public class election {
 		for (String string : BallotsAsStrings) {
 			ballot currentBallot = new ballot(string); //Create a new ballot
 			if(currentBallot.isBlank()) {totalBlankBallots++; System.out.println("Ballot " + currentBallot.getBallotNum() + " is blank. We cannot use it.");} //It's blank, we cannot use it.
-			else if (currentBallot.isInvalid()) {totalInvalidBallots++; System.out.println("Ballot " + currentBallot.getBallotNum() + " is invalid. We cannot use it");} //It's invalid, we cannot use it.
-			else {
+			else if (currentBallot.isInvalid()||currentBallot.getNumberOfCandidates()>ActiveCandidates.size()) {totalInvalidBallots++; System.out.println("Ballot " + currentBallot.getBallotNum() + " is invalid. We cannot use it");} //It's invalid, we cannot use it. We added a check to see if there are more candidates in this ballot.
+			else{
+				//DETERMINE WHO IS NUMBER ONE, AND ADD IT TO THE APPROPRIATE SET FOR THAT CANDIDATE.
+				getCandidate(currentBallot.getFirstChoice()).addBallot(currentBallot);
 				totalValidBallots++;
 
 				//Add it to all ballots (this will be used for Tie deciding)
 				AllValidBallots.add(currentBallot);
 
-				//DETERMINE WHO IS NUMBER ONE, AND ADD IT TO THE APPROPRIATE SET FOR THAT CANDIDATE.
-				getCandidate(currentBallot.getFirstChoice()).addBallot(currentBallot);
-
 			}
 		}
-
-		//Save some data
-		Results.add("Number of ballots: " + (totalValidBallots+totalBlankBallots+totalInvalidBallots));
-		Results.add("Number of blank ballots: " + totalBlankBallots);
-		Results.add("Number of invalid ballots: " + totalInvalidBallots);
 
 		if (totalValidBallots==0) {
 			//Handle a possibility that there are no valid ballots
@@ -146,6 +140,12 @@ public class election {
 			System.out.println("ROUND " + Rounds + ", LEADING: " + CurrentlyLeadingCandidate + " (" + ((100*CurrentlyLeadingCandidate.getCount())/totalValidBallots) + "%, " + CurrentlyLeadingCandidate.getCount() + " #1s), TRAILING: " + CurrentlyTrailingCandidate + " (" + ((100*CurrentlyTrailingCandidate.getCount())/totalValidBallots) + "%, " + CurrentlyTrailingCandidate.getCount() + " #1s)");
 			Rounds++;
 		}
+
+		//Save the total data now as it may have shifted during flight.
+		Results.add(0,"Number of invalid ballots: " + totalInvalidBallots);
+		Results.add(0,"Number of blank ballots: " + totalBlankBallots);
+		Results.add(0,"Number of ballots: " + (totalValidBallots+totalBlankBallots+totalInvalidBallots));
+
 
 		//If we've made it this far, CurrentlyLeadingCandidate is the leading candidate of this election. He's won.
 		Results.add("Winner: " + CurrentlyLeadingCandidate.getName() + " wins with " + CurrentlyLeadingCandidate.getCount() + " #1's");
@@ -262,7 +262,7 @@ public class election {
 
 
 		} while(LLC.size()>1 && N<=ActiveCandidates.size());
-		
+
 		//Special case, if there's still people, return with the highest candidate ID
 		if(LLC.size()>1) {return LLC.last();}
 		return CurrentlyTrailingCandidate;
@@ -398,7 +398,7 @@ public class election {
 				if(newTopChoice==-1) {throw new IllegalStateException("This ballot has no top choice. " + currentBallot.getBallotNum());}
 
 				//To make sure their new top choice is in the list of active ballots, if their top choice is not in the list...
-				while (getCandidate(newTopChoice)==null) {
+				while (getCandidate(newTopChoice)==null||newTopChoice==-1) {
 
 					//Eliminate their top choice
 					currentBallot.eliminate(newTopChoice);
@@ -407,8 +407,17 @@ public class election {
 					newTopChoice=currentBallot.getFirstChoice();
 				}
 
-				//Move this ballot to their new top candidate
-				moveToCandidate(currentBallot, getCandidate(newTopChoice));
+				if(newTopChoice==-1) {
+					//There's no new top choice, so this coso is invalid
+					currentBallot.markInvalid();
+					totalInvalidBallots++;
+					totalValidBallots--;
+					AllValidBallots.remove(currentBallot);
+
+				}else {
+					//Move this ballot to their new top candidate
+					moveToCandidate(currentBallot, getCandidate(newTopChoice));
+				}
 
 			}
 		}
