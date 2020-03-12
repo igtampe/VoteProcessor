@@ -86,18 +86,6 @@ public class ballot {
 			TestRank++;
 			if(Candidate==-1) {markInvalid(); return;}
 		}
-		
-		Candidate = 1;
-		TestRank=0;
-		while(Candidate<NumberofCandidates+1 || TestRank==-1)	{
-			//Check that each candidate has a Rank. If the candidate is equal to -1, we don't have it.
-			TestRank=getRankByCandidate(Candidate);
-			Candidate++;
-			if(TestRank==-1) {markInvalid(); return;}
-		}
-		
-
-		
 	}
 	
 	/**

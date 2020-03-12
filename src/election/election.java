@@ -23,7 +23,7 @@ public class election {
 
 	//PLEASE FOR THE LOVE OF GOD DO NOT FORGET TO REPLACE THIS TO THE RIGHT COSOS WHEN WE SUBMIT
 	public final static String CandidatesFile = "candidatesORIG.csv";
-	public final static String BallotsFile = "ballotsORIG.csv";
+	public final static String BallotsFile = "ballots2.csv";
 	//DO NOT FORGET IGNACIO. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 	private static ArrayList<Candidate> ActiveCandidates;
