@@ -64,7 +64,6 @@ public class election {
 		for (String string : CandidatesAsStrings) {
 			String[] currentCandidate = string.split(",");
 			ActiveCandidates.add(new Candidate(currentCandidate[0],Integer.parseInt(currentCandidate[1])));
-			System.out.println("Added candidate '" + currentCandidate[0] + "' with ID " + currentCandidate[1]);
 		}
 
 		if (BallotsAsStrings.size()==0) {
@@ -85,8 +84,8 @@ public class election {
 		//FOR EACH LINE IN THE ARRAY, CREATE A NEW BALLOT AND INCREMENT THE APPROPRIATE totalBallot VARIABLE (Invalid, Blank, Valid)		
 		for (String string : BallotsAsStrings) {
 			ballot currentBallot = new ballot(string); //Create a new ballot
-			if(currentBallot.isBlank()) {totalBlankBallots++; System.out.println("Ballot " + currentBallot.getBallotNum() + " is blank. We cannot use it.");} //It's blank, we cannot use it.
-			else if (currentBallot.isInvalid()||currentBallot.getNumberOfCandidates()>ActiveCandidates.size()) {totalInvalidBallots++; System.out.println("Ballot " + currentBallot.getBallotNum() + " is invalid. We cannot use it");} //It's invalid, we cannot use it. We added a check to see if there are more candidates in this ballot.
+			if(currentBallot.isBlank()) {totalBlankBallots++;} //It's blank, we cannot use it.
+			else if (currentBallot.isInvalid()||currentBallot.getNumberOfCandidates()>ActiveCandidates.size()) {totalInvalidBallots++;} //It's invalid, we cannot use it. We added a check to see if there are more candidates in this ballot.
 			else{
 				//DETERMINE WHO IS NUMBER ONE, AND ADD IT TO THE APPROPRIATE SET FOR THAT CANDIDATE.
 				getCandidate(currentBallot.getFirstChoice()).addBallot(currentBallot);
@@ -117,8 +116,6 @@ public class election {
 		CurrentlyLeadingCandidate=leadingCandidate();
 		CurrentlyTrailingCandidate=trailingCandidate();
 
-		System.out.println("ROUND 0, LEADING: " + CurrentlyLeadingCandidate + " (" + ((100*CurrentlyLeadingCandidate.getCount())/totalValidBallots) + "%, " + CurrentlyLeadingCandidate.getCount() + " #1s), TRAILING: " + CurrentlyTrailingCandidate + " (" + ((100*CurrentlyTrailingCandidate.getCount())/totalValidBallots) + "%, " + CurrentlyTrailingCandidate.getCount() + " #1s)");
-
 		//WHILE NOBODY HAS A MAJORITY (osea if for each candidate, there's nobody with count > .5*totalBallots) REMOVE THE ONE WITH THE MOST VOTES, AND GET THE NEW LEADING CANDIDATE
 		while (CurrentlyLeadingCandidate.getCount() < (totalValidBallots * 0.5)) {
 			//Eliminate the candidate
@@ -137,7 +134,6 @@ public class election {
 			CurrentlyTrailingCandidate=trailingCandidate();
 
 			//KK done, time for another round.
-			System.out.println("ROUND " + Rounds + ", LEADING: " + CurrentlyLeadingCandidate + " (" + ((100*CurrentlyLeadingCandidate.getCount())/totalValidBallots) + "%, " + CurrentlyLeadingCandidate.getCount() + " #1s), TRAILING: " + CurrentlyTrailingCandidate + " (" + ((100*CurrentlyTrailingCandidate.getCount())/totalValidBallots) + "%, " + CurrentlyTrailingCandidate.getCount() + " #1s)");
 			Rounds++;
 		}
 
@@ -190,7 +186,6 @@ public class election {
 	 * @return The actual leading candidate
 	 */
 	private static Candidate LeadingTieBreaker(ArrayList<Candidate> LeadingCandidates) {
-		System.out.println("TIE DETECTED BETWEEN: " + ArraylistToString(LeadingCandidates));
 		int N=1;
 		ArrayList<Candidate> LLC = new ArrayList<Candidate>(LeadingCandidates.size());
 		Candidate CurrentlyLeadingCandidate = LeadingCandidates.first();
@@ -200,7 +195,6 @@ public class election {
 		//While there's more than 1 leading candidate.
 		do {
 			N++;
-			System.out.println("Checking Position " + N);
 			for (Candidate candidate : LeadingCandidates) {
 				//GET THEIR Nth PLACE POSITIONS
 				int CurCandidateCount = CountAtPosition(CurrentlyLeadingCandidate, N);
@@ -231,7 +225,6 @@ public class election {
 	 * @return The actual trailing candidate
 	 */
 	private static Candidate TrailingTieBreaker(ArrayList<Candidate> TrailingCandidates) {
-		System.out.println("TIE DETECTED BETWEEN: " + ArraylistToString(TrailingCandidates));
 		int N=1;
 		ArrayList<Candidate> LLC = new ArrayList<Candidate>(TrailingCandidates.size());
 		Candidate CurrentlyTrailingCandidate = TrailingCandidates.first();
@@ -241,7 +234,6 @@ public class election {
 		//While there's more than 1 leading candidate.
 		do {
 			N++;
-			System.out.println("Checking Position " + N);
 			for (Candidate candidate : TrailingCandidates) {
 				//GET THEIR Nth PLACE POSITIONS
 				int CurCandidateCount = CountAtPosition(candidate, N);
