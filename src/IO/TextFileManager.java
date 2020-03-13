@@ -54,11 +54,11 @@ public class TextFileManager {
 
 
 	/**
-	 * Spits out the contents of the file as an array
+	 * Spits out the contents of the file as a list.
 	 * @return The file as an array.
 	 * @throws Exception If something happens (Possibly that it doesn't exist)
 	 */
-	public DoublyLinkedList<String> ToArray() throws Exception {
+	public DoublyLinkedList<String> ToList() throws Exception {
 
 		//Time to read using this program's "eyes" 
 		BufferedReader Eyes = new BufferedReader(new FileReader(filename));
@@ -80,11 +80,10 @@ public class TextFileManager {
 
 		//Boop we're done
 		return Temp;
-
 	}
 
 	/**
-	 * Prints this out into a file (Will overwrite!)
+	 * Prints each string in the list out into a file (with each element representing a line) <b>(will overwrite!)</b>
 	 * @param StuffToPrint
 	 */
 	public void print(ArrayList<String> StuffToPrint) throws Exception {

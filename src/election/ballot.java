@@ -45,7 +45,7 @@ public class ballot {
 			//SplitString[i].split(":") = {Ci,Ri}
 			
 			//Assuming this isn't a blank ballot, if we find an empty slot, we have an invalid ballot.
-			if(SplitString[i].split(":")[1]=="") {
+			if(SplitString[i].split(":")[1]==null) {
 				markInvalid();
 				return;
 			}

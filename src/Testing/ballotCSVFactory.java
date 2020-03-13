@@ -6,7 +6,8 @@ import ciic4020.list.ArrayList;
 import ciic4020.list.DoublyLinkedList;
 
 /**
- * This coso creates ballots. Maybe use it to create insane tests with hunderds of thousands of candidates and ballots!
+ * This coso creates ballots. Maybe use it to create insane tests with hunderds of thousands of candidates and ballots!<br>
+ * Perhaps you guys could use it?
  * @author igtampe
  *
  */
@@ -23,7 +24,7 @@ public class ballotCSVFactory {
 		TextFileManager NewBallots = new TextFileManager(OutputFile,true);
 
 		//Replace this with a method that you made to get a file as an array
-		DoublyLinkedList<String> AllCandidates = (new TextFileManager(InputFile)).ToArray();
+		DoublyLinkedList<String> AllCandidates = (new TextFileManager(InputFile)).ToList();
 
 		//Get all candidates IDs
 		ArrayList<Integer> AllCandidateIDs = new ArrayList<Integer>(AllCandidates.size());

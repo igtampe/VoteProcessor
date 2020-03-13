@@ -59,8 +59,8 @@ public class election {
 		ResultsTXT = new TextFileManager("results.txt",true); //this one we have to overwrite.
 
 		//Read all of the files we're going to read.
-		DoublyLinkedList<String> CandidatesAsStrings= CandidatesCSV.ToArray();
-		DoublyLinkedList<String> BallotsAsStrings= BallotsCSV.ToArray();
+		DoublyLinkedList<String> CandidatesAsStrings= CandidatesCSV.ToList();
+		DoublyLinkedList<String> BallotsAsStrings= BallotsCSV.ToList();
 
 		//LOAD CANDIDATES
 		ActiveCandidates = new ArrayList<election.Candidate>(CandidatesAsStrings.size());
@@ -186,7 +186,7 @@ public class election {
 
 
 	/**
-	 * Breaks a tie between leading candidates
+	 * Breaks a tie between leading candidates, by looking at their ranks at 2, 3, and subsequent, until there is only one leading candidate.
 	 * @param LeadingCandidates
 	 * @return The actual leading candidate
 	 */
@@ -225,7 +225,9 @@ public class election {
 	}
 
 	/**
-	 * Breaks a tie between trailing candidates
+	 * Breaks a tie between trailing candidates, by looking at their ranks 2, 3, and susbsequent, until there is only one leading candidate.<br><br>
+	 * <b>SPECIAL CASE</b><br>
+	 * If there's a straight tie, the one with the lowest candidate ID will be returned as the trailing candidate.
 	 * @param TrailingCandidates
 	 * @return The actual trailing candidate
 	 */
@@ -313,16 +315,6 @@ public class election {
 	}
 
 	/**
-	 * Returns a joined Arraylist string
-	 * @return All elements in the arraylist, separated by a comma
-	 */
-	public static String ArraylistToString(ArrayList<Candidate> a) {
-		String returnString = "";
-		for (Object object : a) {returnString+=object.toString() + ", ";}
-		return returnString;
-	}
-
-	/**
 	 * This is the class for a candidate
 	 * @author igtampe
 	 */
@@ -349,7 +341,7 @@ public class election {
 		public Candidate() {
 			dummy=true;
 			Name="I'm a dummy candidate. I shouldn't have won";
-			ID=-1;
+			ID=-2;
 		}
 
 		/**
@@ -363,7 +355,8 @@ public class election {
 		public int getID() {return ID;}
 
 		/**
-		 * @return Returns whether or not this candidate is a dummy candidate 
+		 * <i>Even though all politicians are dummies, this only returns true if this is a dummy object.</i>
+		 * @return Returns whether or not this candidate is a dummy candidate.  
 		 */
 		public boolean isDummy() {return dummy;}
 
@@ -371,20 +364,23 @@ public class election {
 		 * @return The number of ballots that have this candidate as Number 1
 		 */
 		public int getCount() {
-			if (dummy) { return 0;} //If it's dummy this coso should not be used.
+			if (dummy) {return 0;} //If it's dummy this coso should not be used.
 			return myBallots.size();
 		}
 
 		/**
 		 * Adds the specified ballot to the collection of ballots that have this candidate as number 1
-		 * @param newBallot A new candidate.
+		 * @param newBallot A new ballot to add to the set.
 		 */
 		public void addBallot(ballot newBallot) {myBallots.add(newBallot);}
 
 		/**
-		 * Eliminates this candidate 
+		 * Eliminates this candidate. <br>
+		 * This method takes care of moving all ballots from this candidate, to their respective new first choice.<br>
+		 * It also makes sure their new first choice hasn't previously been eliminated.<br><br>
+		 * In the process of eliminating, the ballot may be marked as invalid if the new top choice is -1 (IE The ballot has no top choice).
 		 */
-		private void eliminate() {
+		public void eliminate() {
 			int newTopChoice;
 
 			//Comb through all of my ballots and move them to the appropriate new candidates
@@ -413,18 +409,11 @@ public class election {
 
 				}else {
 					//Move this ballot to their new top candidate
-					moveToCandidate(currentBallot, getCandidate(newTopChoice));
+					getCandidate(newTopChoice).addBallot(currentBallot);
 				}
 
 			}
 		}
-
-		/**
-		 * Moves a ballot to another candidate
-		 * @param moveBallot The ballot to move
-		 * @param TheCandidate The candidate this ballot needs to be moved to.
-		 */
-		private void moveToCandidate(ballot moveBallot, Candidate TheCandidate) {TheCandidate.addBallot(moveBallot);}
 
 		/**
 		 * Clears a candidate in preparation for deletion
