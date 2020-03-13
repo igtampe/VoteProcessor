@@ -228,7 +228,7 @@ documented and commented so that we may understand your intention. You will lose
 you don’t provide comments or if we deem they are inadequate.<br><br>
 
 ## Submission
-The final date to submit your program will be Thursday, March 12, 2020 at 11:59pm. The name
+The final date to submit your program will be Thursday, March 13, 2020 at 11:59pm. The name
 of your zip file must follow one of the two following formats: P1_4020_nnnnnnnn_192.zip (for
 those in CIIC4020) or P1_4035_nnnnnnnn_192.zip (for those in ICOM4035), where nnnnnnnnn
 should be replaced with your student id number. <br><br>
