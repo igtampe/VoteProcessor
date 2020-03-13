@@ -2,10 +2,11 @@ package election;
 import IO.TextFileManager;
 import ciic4020.list.ArrayList;
 import ciic4020.list.DoublyLinkedList;
+import ciic4020.set.DynamicSet;
 
 /**
  * ---[USED DATA STRUCTURES]---
- * Arraylists were used for everything that was defined. Given their low access times and relative simplicity, I considered them the best fit.
+ * Arraylists were used for almost everything that was defined. Given their low access times and relative simplicity, I considered them the best fit.
  * I mean I could've used any data structure, really. Even a set. As long as it's itterable, we can do. There's need for a sense
  * of order. As long as it's dynamic, we can use it.
  * 
@@ -14,6 +15,10 @@ import ciic4020.list.DoublyLinkedList;
  * 
  * The only times we don't know what the size of the structure will be is when we read files, hence the TextFileManager uses a DoublyLinked List.
  * 
+ * Also, Ballots are stored in candidates. Candidates are stored as a list. Ballots are stored in a set, which is held by the candidate. Thus
+ * We have a list of sets as required by the specifications.
+ * 
+ * ---[Class Explination]---
  * The Election class also incldues the private internal class Candidate, which holds a candidate's ID, Name, and the ballots where he is numero uno.
  * 
  * @author igtampe
@@ -323,7 +328,7 @@ public class election {
 	 */
 	private static class Candidate {
 		private boolean dummy=false;
-		private ArrayList<ballot> myBallots;
+		private DynamicSet<ballot> myBallots;
 		private String Name;
 		private Integer ID;
 
@@ -335,7 +340,7 @@ public class election {
 		public Candidate(String myName, Integer myID) {
 			Name=myName;
 			ID=myID;
-			myBallots=new ArrayList<ballot>(1);
+			myBallots=new DynamicSet<ballot>(1);
 		}
 
 		/**

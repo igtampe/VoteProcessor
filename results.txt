@@ -1,17 +1,7 @@
-Number of ballots: 30
-Number of blank ballots: 10
-Number of invalid ballots: 10
-Round 1: B i d e n was eliminated with 0 #1's
-Round 2: The Booty Judge was eliminated with 0 #1's
-Round 3: H was eliminated with 0 #1's
-Round 4: Obabo was eliminated with 0 #1's
-Round 5: Scareis was eliminated with 0 #1's
-Round 6: Bern was eliminated with 0 #1's
-Round 7: Amama was eliminated with 0 #1's
-Round 8: Troom was eliminated with 0 #1's
-Round 9: Clinton was eliminated with 0 #1's
-Round 10: JEB! was eliminated with 0 #1's
-Round 11: Beta was eliminated with 1 #1's
-Round 12: Klob was eliminated with 1 #1's
-Round 13: Bloombito was eliminated with 2 #1's
-Winner: The Yang Gang wins with 5 #1's
+Number of ballots: 10
+Number of blank ballots: 0
+Number of invalid ballots: 0
+Round 1: Lola Mento was eliminated with 1 #1's
+Round 2: Juan Lopez was eliminated with 1 #1's
+Round 3: Pucho Avellanet was eliminated with 3 #1's
+Winner: Pepe Perez wins with 6 #1's
